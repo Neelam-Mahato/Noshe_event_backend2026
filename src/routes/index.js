@@ -12,6 +12,10 @@ router.post('/agenda',agendaControlller.agendaDetails);
 
 router.get('/agendaFilters',agendaControlller.agendaFilters);
 
+router.get('/favoriteDetail',agendaControlller.favoriteDetails);
+
+router.post('/favorite',agendaControlller.favoriteAgenda);
+
 router.post('/loginOtp',loginController.loginOtp);
 
 router.post('/login',loginController.login);

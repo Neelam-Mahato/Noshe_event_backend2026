@@ -15,6 +15,7 @@
     s.session_track,
     s.session_details,
     s.session_date,
+    s.favorite,
     IF(
         COUNT(es.event_session_id) = 0,
         JSON_ARRAY(),
@@ -98,8 +99,71 @@ const agendaFilters= async (payload) => {
           const filtered = items.filter(item => item[key] != null && String(item[key]).toLowerCase().includes(keyword));
           if (filtered.length) result1[group] = filtered;
         }
-
+        console.log(query,result1)
         return result1;
+     } catch (error) {
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
+
+  const favorite= async (payload) => {
+    try{
+        const searchTerm = [payload.favorite,payload.session_id];
+        let query = `Update event_session set favorite = ? where session_id = ?`;
+        const [result] = await db.execute(query,searchTerm);
+        return result.affectedRows == 1 ? {success:true} : {success: false}; 
+
+     } catch (error) {
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
+
+  const favoriteData= async () => {
+    try{ 
+
+          let params =[1];
+          let query = `SELECT
+    s.session_id,
+    s.session_categories,
+    s.session_timeline,
+    s.session_tenure,
+    s.session_halls,
+    s.session_day,
+    s.session_track,
+    s.session_details,
+    s.session_date,
+    s.favorite,
+    IF(
+        COUNT(es.event_session_id) = 0,
+        JSON_ARRAY(),
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'speaker_name', es.speaker_name,
+                'speaker_designation', es.speaker_designation,
+                'speaker_company', es.speaker_company,
+                'speaker_image', es.speaker_image
+            )
+        )
+    ) AS speakers
+FROM event_session s
+LEFT JOIN event_session_speakers es
+    ON s.session_id = es.session_id
+WHERE s.favorite = ?`;
+     
+      query += ` GROUP BY s.session_id` ;
+      console.log(query)
+    const [result] = await db.execute(query,params);
+    
+
+    return result; 
      } catch (error) {
 
     return {
@@ -111,4 +175,6 @@ const agendaFilters= async (payload) => {
 
 module.exports = {
     agendaDetails,
-    agendaFilters};
+    agendaFilters, 
+    favorite,
+  favoriteData};

@@ -21,7 +21,31 @@ const agendaFiltersService = async(filterData) => {
   }  
 }
 
+const agendaFavorite = async(favoriteData) => {
+  try{
+    const favData = await agendaModel.favorite({session_id:favoriteData.session_id,favorite:favoriteData.favorite});
+    return  favData;
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
+const favoriteDetails = async() => {
+  try{
+          console.log(2)
+
+    const favData = await agendaModel.favoriteData();
+    return  favData;
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
 module.exports = {
     agendaDetailsService,
-    agendaFiltersService
+    agendaFiltersService,
+    agendaFavorite,
+    favoriteDetails
 }
