@@ -7,8 +7,10 @@ const jwt = require('jsonwebtoken');
 const loginMember = async(loginData) => {
   try{
     const otp = crypto.randomInt(100000, 999999);
-    await injector.sendOtp(otp,loginData.email);
     const loginDatas = await eventModel.checkEmail({otp:otp, email_id: loginData.email});
+    if(loginData.success == true){
+          await injector.sendOtp(otp,loginData.email);
+    }
     return  loginDatas;
   }
   catch(error){

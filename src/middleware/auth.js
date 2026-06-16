@@ -6,6 +6,7 @@ const verifyToken = (req, res, next) => {
     if (!authHeader) {
         return res.status(401).json({
             success:false,
+            code: 'TOKEN_MISSING',
             message:'Token Missing'
         });
     }
@@ -16,8 +17,17 @@ const verifyToken = (req, res, next) => {
         // req.memberId = decoded.memberId;
         next();
     } catch(err){
+
+          if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                code: 'TOKEN_EXPIRED',
+                message: 'Token Expired'
+            });
+        }
         return res.status(401).json({
             success:false,
+            code: 'INVALID_TOKEN',
             message:'Invalid Token'
         });
 
