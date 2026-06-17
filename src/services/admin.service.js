@@ -28,7 +28,7 @@ const loginVerify = async(loginData) => {
 
 const getParticipantData = async(loginData) => {
   try{
-        const participantData = await adminModel.getParticipants(loginData);
+        const participantData = await adminModel.getParticipants({token:loginData});
         return  participantData;
     }
     catch(error){

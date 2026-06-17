@@ -34,11 +34,16 @@ const db = require("../config/db");
 
   const getParticipants= async (payload) => {
     try{ 
-      const query = `Select admin_token from admin`;
-      const [result] = await db.execute(query);
-      console.log(result[0].admin_token)
+      const param = [payload.token];
+      const query1 = `Select admin_token from admin `;
+      const [result1] = await db.execute(query);
+      const query = `Select admin_token from admin where admin_token = ?`;
+      const [result] = await db.execute(query,param);
+       if(result1.length > 0 && result.length == 0 ){
+        return {success:false,msg:1} 
+      }
       if(result[0].admin_token == null || result[0].admin_token == "" || result[0].admin_token == 'null'){
-        return {success:false} 
+        return {success:false ,msg:2} 
       }
       else
       {

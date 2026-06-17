@@ -4,6 +4,7 @@ const loginOtp = async(req,res) =>{
     try{
         const loginData = req.body;
         const loginResult = await loginService.loginMember(loginData);
+        console.log(loginResult)
         if(loginResult.success == false)
             return res.status(500).json({ success: false, message: loginResult.message });
         else
