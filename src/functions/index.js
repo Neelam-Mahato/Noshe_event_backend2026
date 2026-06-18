@@ -3,17 +3,39 @@
  const pass = "pyso ehtv xpls ckmo";
 const port = 587;
 const host = "smtp.gmail.com"
- const transporter = nodemailer.createTransport({
-   host: host,      
-   port: parseInt(port || '587'), 
-   secure: false,                    
-   auth: {
-     user: email,    
-     pass: pass     
-   }, connectionTimeout: 30000,          // 30s
-  greetingTimeout: 30000,
-  socketTimeout: 30000,
- });
+ import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
+  try {
+    const base64Data = qrCodeBase64 != null 
+      ? qrCodeBase64.split("base64,")[1] 
+      : null;
+
+    await resend.emails.send({
+      from: 'Your App Team <onboarding@resend.dev>', // or your verified domain
+      to: recipientEmail,
+      subject: base64Data ? `Your Registration Security QR Code` : `Request declined`,
+      html: `
+        <h3>Hello ${username},</h3>
+        ${base64Data ? `
+          <p>Thank you for registering. Below is your secure entry QR code:</p>
+          <img src="cid:user_qr_code" alt="Registration QR" style="width:200px;height:200px;" />
+          <p>Keep this code confidential.</p>` : `
+          <p>Your registration request has been declined. Please contact admin.</p>`}
+      `,
+      attachments: base64Data ? [{
+        filename: 'qrcode.png',
+        content: base64Data,  // base64 string directly
+      }] : [],
+    });
+
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Email error:', error);
+    throw error;
+  }
+}
 
  async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
     try {
