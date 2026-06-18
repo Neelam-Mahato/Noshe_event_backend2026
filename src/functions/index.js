@@ -94,5 +94,4 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
       console.error('Email pipeline failed:', error);
     }
   }
-  exports {
-    sendQrEmail,sendOtp }
+  export {sendQrEmail,sendOtp }
