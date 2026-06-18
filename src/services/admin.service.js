@@ -71,6 +71,7 @@ const manageRegistration = async(header, body) => {
             await injector.sendQrEmail(body.email, body.name,null); 
             return  {success: true,message: "Register request declined"};
         }
+        }
         else {
             return  {success: false}; 
         }
