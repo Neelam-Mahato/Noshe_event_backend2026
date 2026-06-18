@@ -26,9 +26,9 @@ const loginVerify = async(loginData) => {
   }  
 }
 
-const getParticipantData = async(loginData) => {
+const getParticipantData = async(participantsData) => {
   try{
-        const participantData = await adminModel.getParticipants({token:loginData});
+        const participantData = await adminModel.getParticipants({token:participantsData});
         return  participantData;
     }
     catch(error){
@@ -36,6 +36,39 @@ const getParticipantData = async(loginData) => {
     }  
 }
 
+const waitingMember = async(memberData) => {
+  try{
+        const participantData = await adminModel.getWaitingMembers({token:memberData});
+        return  participantData;
+    }
+    catch(error){
+        return error;
+    }  
+}
+
+const manageRegistration = async(header, body) => {
+  try{
+        let generatedQr = null;
+        let qrToken = null;
+        if(body.aproval_status == 1){
+            const { randomUUID } = require('crypto');
+            qrToken = randomUUID();
+            const qrPayload = qrToken;
+            generatedQr = await QRCode.toDataURL(qrPayload);
+        } else {
+            qrToken = null;
+            generatedQr = null;
+        }
+        const participantData = await adminModel.manageRegistration({token:header,register_status:body.aproval_status, register_id:body.id,uid:qrToken,qr_code:generatedQr});
+        if(participantData){
+            await injector.sendQrEmail(participantData.email, participantData.name, generatedQr); 
+        }
+        return  participantData;
+    }
+    catch(error){
+        return error;
+    }  
+}
 
 const logoutSession = async(logoutData) => {
   try{
@@ -50,5 +83,7 @@ const logoutSession = async(logoutData) => {
 module.exports = {
     loginVerify,
     getParticipantData,
+    waitingMember,
+    manageRegistration,
     logoutSession
 }
