@@ -1,6 +1,5 @@
 const EventModel = require('../models/event');
 
-
 const registerService = async(registerData) => {
   try{
     console.log(registerData);

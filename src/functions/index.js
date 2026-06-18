@@ -1,4 +1,5 @@
  const nodemailer = require('nodemailer');
+
  const transporter = nodemailer.createTransport({
    host: process.env.EMAIL_HOST,      
    port: parseInt(process.env.EMAIL_PORT || '587'), 
@@ -11,8 +12,6 @@
 
  async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
     try {
- console.log(process.env.EMAIL_USER,process.env.EMAIL_PASS)
-
       const base64Data = qrCodeBase64 != null? qrCodeBase64.split("base64,")[1] : null;
 
       const mailOptions = {
@@ -48,7 +47,7 @@ console.log(mailOptions)
    async function sendOtp(otp,recipientEmail) {
     try {
       const mailOptions = {
-        from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+        from: `"Your App Team" <${email}>`,
         to: recipientEmail,
         subject: 'Your Registration Security QR Code',
         html: `
@@ -65,6 +64,6 @@ console.log(mailOptions)
       console.error('Email pipeline failed:', error);
     }
   }
-  module.exports = {
+   module.exports = {
     sendQrEmail,sendOtp
   }

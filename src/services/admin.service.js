@@ -63,22 +63,26 @@ const manageRegistration = async(header, body) => {
         }
         const participantData = await adminModel.manageRegistration({register_status:body.register_status, register_id:body.register_id,uid:qrToken,qr_code:generatedQr});
         console.log("service",participantData)
-        if(participantData.success == true && body.register_status == 1){
+        if(participantData.success == true ){
+          if( body.register_status == 1){
             await injector.sendQrEmail(body.email, body.name, generatedQr); 
             return  {success: true,message: "Register request approved"};
-        }
-        else if(participantData.success == true && body.register_status == 2)
-        {
+          }else{
             await injector.sendQrEmail(body.email, body.name,null); 
             return  {success: true,message: "Register request declined"};
+        }
         }
         else {
             return  {success: false}; 
         }
     }
     catch(error){
-        return error;
-    }  
+      console.log(error);
+      return {
+        success: false,
+        message: error.message
+      };
+  }  
 }
 
 const logoutSession = async(logoutData) => {
