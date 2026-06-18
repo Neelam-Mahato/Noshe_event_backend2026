@@ -4,7 +4,7 @@
 const port = 587;
 const host = "smtp.gmail.com"
  import { Resend } from 'resend';
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend("rnd_RTCdohBJJTFX7SWUJuidOiH3xZ56");
 
 async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
   try {
