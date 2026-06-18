@@ -10,7 +10,9 @@ const host = "smtp.gmail.com"
    auth: {
      user: email,    
      pass: pass     
-   }
+   }, connectionTimeout: 30000,          // 30s
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
  });
 
  async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
