@@ -36,7 +36,7 @@ const db = require("../config/db");
     try{ 
       const param = [payload.token];
       const query1 = `Select admin_token from admin `;
-      const [result1] = await db.execute(query);
+      const [result1] = await db.execute(query1);
       const query = `Select admin_token from admin where admin_token = ?`;
       const [result] = await db.execute(query,param);
        if(result1.length > 0 && result.length == 0 ){
@@ -68,7 +68,7 @@ const db = require("../config/db");
     try{ 
       const param = [payload.token];
       const query1 = `Select admin_token from admin `;
-      const [result1] = await db.execute(query);
+      const [result1] = await db.execute(query1);
       const query = `Select admin_token from admin where admin_token = ?`;
       const [result] = await db.execute(query,param);
        if(result1.length > 0 && result.length == 0 ){
@@ -79,8 +79,10 @@ const db = require("../config/db");
       }
       else
       {
-        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ${0}`;
-        const [result1] = await db.execute(query);
+        const param = [0];
+        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ?`;
+        const [result1] = await db.execute(query, param);
+        console.log(query)
         return result1;
       }
       
@@ -99,7 +101,7 @@ const db = require("../config/db");
     try{ 
       const param = [payload.token];
       const query1 = `Select admin_token from admin `;
-      const [result1] = await db.execute(query);
+      const [result1] = await db.execute(query1);
       const query = `Select admin_token from admin where admin_token = ?`;
       const [result] = await db.execute(query,param);
        if(result1.length > 0 && result.length == 0 ){
