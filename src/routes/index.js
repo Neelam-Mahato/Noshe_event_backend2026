@@ -28,6 +28,10 @@ router.post('/admin/login',adminController.login);
 
 router.get('/admin/eventRecord',auth.verifyToken,adminController.participantDetails);
 
+router.post('/admin/manageMember',auth.verifyToken,adminController.manageMembers);
+
+router.get('/admin/waitingMembers',auth.verifyToken,adminController.waitingMemberDetails);
+
 router.post('/admin/logout',adminController.logout);
 
 router.get('/', (req, res) => {
