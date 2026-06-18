@@ -64,6 +64,67 @@ const db = require("../config/db");
   }
   }
 
+  const getWaitingMembers= async (payload) => {
+    try{ 
+      const param = [payload.token];
+      const query1 = `Select admin_token from admin `;
+      const [result1] = await db.execute(query);
+      const query = `Select admin_token from admin where admin_token = ?`;
+      const [result] = await db.execute(query,param);
+       if(result1.length > 0 && result.length == 0 ){
+        return {success:false,msg:1} 
+      }
+      if(result[0].admin_token == null || result[0].admin_token == "" || result[0].admin_token == 'null'){
+        return {success:false ,msg:2} 
+      }
+      else
+      {
+        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE registration_status = ${0}`;
+        const [result1] = await db.execute(query);
+        return result1;
+      }
+      
+    
+     } catch (error) {
+    console.error(' Error:', error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
+
+   const manageRegistration= async (payload) => {
+    try{ 
+      const param = [payload.token];
+      const query1 = `Select admin_token from admin `;
+      const [result1] = await db.execute(query);
+      const query = `Select admin_token from admin where admin_token = ?`;
+      const [result] = await db.execute(query,param);
+       if(result1.length > 0 && result.length == 0 ){
+        return {success:false,msg:1} 
+      }
+      if(result[0].admin_token == null || result[0].admin_token == "" || result[0].admin_token == 'null'){
+        return {success:false ,msg:2} 
+      }
+      else 
+      {
+        const params = [payload.register_status, payload.uid,payload_token, payload.registerid];
+        const query = `Update registered_members set register_status = ? , uid = ?, qr_code = ? where registerid = ?`;
+        const [result1] = await db.execute(query,params);
+        return result11.affectedRows == 1 ? {success:true} : {success: false}; 
+      }
+    
+     } catch (error) {
+    console.error(' Error:', error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
   
   const logout= async (payload) => {
     try{ 
@@ -85,6 +146,8 @@ const db = require("../config/db");
   module.exports = {
     adminDetail,
     verifyLogin,
-    logout,
-    getParticipants
+    getWaitingMembers,
+    manageRegistration,
+    getParticipants,
+    logout
 };
