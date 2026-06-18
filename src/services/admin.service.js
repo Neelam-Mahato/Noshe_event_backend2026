@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const {adminModel} = require("../models/index");
+const injector = require('../functions/index');
 
 const loginVerify = async(loginData) => {
-  try{ 
+  try{
         const token = jwt.sign( { memberId: loginData.username },process.env.JWT_SECRET,{ expiresIn: '1d' });
         const adminResult = await adminModel.adminDetail(); 
         if(adminResult[0].admin_username == loginData.username )
@@ -59,11 +60,16 @@ const manageRegistration = async(header, body) => {
             qrToken = null;
             generatedQr = null;
         }
-        const participantData = await adminModel.manageRegistration({token:header,register_status:body.aproval_status, register_id:body.id,uid:qrToken,qr_code:generatedQr});
-        if(participantData){
+        const participantData = await adminModel.manageRegistration({token:header,register_status:body.register_status, register_id:body.register_id,uid:qrToken,qr_code:generatedQr});
+        if(participantData.success == true && body.register_id == 1){
             await injector.sendQrEmail(participantData.email, participantData.name, generatedQr); 
+            return  {success: true,message: "Register request approved"};
         }
-        return  participantData;
+        else
+        {
+            await injector.sendQrEmail(participantData.email, participantData.name,null); 
+            return  {success: true,message: "Register request declined"};
+        }
     }
     catch(error){
         return error;
