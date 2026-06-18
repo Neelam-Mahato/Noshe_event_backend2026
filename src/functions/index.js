@@ -15,7 +15,7 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
       : null;
 
     await resend.emails.send({
-      from: 'Your App Team <onboarding@resend.dev>', // or your verified domain
+      from: 'Your App Team <neelammahato3@gmail.com>', // or your verified domain
       to: recipientEmail,
       subject: base64Data ? `Your Registration Security QR Code` : `Request declined`,
       html: `
