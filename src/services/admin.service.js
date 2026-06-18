@@ -66,10 +66,13 @@ const manageRegistration = async(header, body) => {
             await injector.sendQrEmail(body.email, body.name, generatedQr); 
             return  {success: true,message: "Register request approved"};
         }
-        else
+        else if(participantData.success == true && body.register_id == 2)
         {
             await injector.sendQrEmail(body.email, body.name,null); 
             return  {success: true,message: "Register request declined"};
+        }
+        else {
+            return  {success: false}; 
         }
     }
     catch(error){
