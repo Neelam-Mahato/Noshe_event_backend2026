@@ -66,25 +66,14 @@ const db = require("../config/db");
 
   const getWaitingMembers= async (payload) => {
     try{ 
-      const param = [payload.token];
-      const query1 = `Select admin_token from admin `;
-      const [result1] = await db.execute(query1);
-      const query = `Select admin_token from admin where admin_token = ?`;
-      const [result] = await db.execute(query,param);
-       if(result1.length > 0 && result.length == 0 ){
-        return {success:false,msg:1} 
-      }
-      if(result[0].admin_token == null || result[0].admin_token == "" || result[0].admin_token == 'null'){
-        return {success:false ,msg:2} 
-      }
-      else
-      {
+     
         const param = [0];
         const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ?`;
+        console.log(query)
         const [result1] = await db.execute(query, param);
         console.log(query)
         return result1;
-      }
+      
       
     
      } catch (error) {
@@ -98,12 +87,11 @@ const db = require("../config/db");
   }
 
    const manageRegistration= async (payload) => {
-    try{ 
-      const param = [payload.token];
-      
+    try{       
         const params = [payload.register_status, payload.uid,payload.qr_code, payload.register_id];
         const query = `Update registered_members set register_status = ? , uid = ?, qr_code = ? where register_id = ?`;
         const [result1] = await db.execute(query,params);
+        console.log(result1.affectedRows)
         return result1.affectedRows == 1 ? {success:true} : {success: false}; 
       
     
