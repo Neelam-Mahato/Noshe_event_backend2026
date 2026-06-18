@@ -52,7 +52,7 @@ const manageRegistration = async(header, body) => {
   try{
         let generatedQr = null;
         let qrToken = null;
-        if(body.aproval_status == 1){
+        if(body.register_status == 1){
             const { randomUUID } = require('crypto');
             qrToken = randomUUID();
             const qrPayload = qrToken;
@@ -77,8 +77,12 @@ const manageRegistration = async(header, body) => {
         }
     }
     catch(error){
-        return error;
-    }  
+      console.log(error);
+      return {
+        success: false,
+        message: error.message
+      };
+  }  
 }
 
 const logoutSession = async(logoutData) => {
