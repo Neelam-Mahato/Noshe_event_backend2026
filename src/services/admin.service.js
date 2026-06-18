@@ -62,7 +62,7 @@ const manageRegistration = async(header, body) => {
         }
         const participantData = await adminModel.manageRegistration({token:header,register_status:body.register_status, register_id:body.register_id,uid:qrToken,qr_code:generatedQr});
         if(participantData.success == true && body.register_id == 1){
-            await injector.sendQrEmail(participantData.email, participantData.name, generatedQr); 
+            await injector.sendQrEmail(body.email, body.name, generatedQr); 
             return  {success: true,message: "Register request approved"};
         }
         else
