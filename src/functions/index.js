@@ -1,7 +1,8 @@
  // const nodemailer = require('nodemailer');
 import nodemailer from 'nodemailer';
 
- const email = "nosheindia.2026@gmail.com";
+ const email = "nosheindia.202@gmail.com";
+const email1 = "neelammahato3@gmail.com";
  const pass = "pyso ehtv xpls ckmo";
 const port = 587;
 const host = "smtp.gmail.com"
@@ -15,7 +16,7 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
       : null;
 
     await resend.emails.send({
-      from: 'Your App Team <neelammahato3@gmail.com>', // or your verified domain
+      from: `"Your App Team" <${email1}> `, // or your verified domain
       to: recipientEmail,
       subject: base64Data ? `Your Registration Security QR Code` : `Request declined`,
       html: `
@@ -32,10 +33,18 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
       }] : [],
     });
 
-    console.log('Email sent successfully');
+ console.log('Resend result:', JSON.stringify(result));  
+    
+    if (result.error) {
+      console.error('Resend error:', result.error);
+      throw new Error(result.error.message);
+    }
+
+    console.log('Email sent, ID:', result.data?.id);
+
   } catch (error) {
-    console.error('Email error:', error);
-    throw error;
+    console.error('sendQrEmail failed:', error.message);
+    throw error; // don't swallow it
   }
 }
 
