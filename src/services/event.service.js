@@ -1,8 +1,5 @@
-const QRCode = require('qrcode');
 const EventModel = require('../models/event');
-const injector = require('../functions/index');
-const { randomUUID } = require('crypto');
-const qrToken = randomUUID();
+
 
 const registerService = async(registerData) => {
   try{
@@ -32,14 +29,10 @@ const registerService = async(registerData) => {
       }
       else
       {
-        const qrPayload = qrToken;
-        const generatedQr = await QRCode.toDataURL(qrPayload);
-        const newRegister = await EventModel.RegisterMember({name: fullName, mobile_no: phone, email_id:email, message:message,qr_code: generatedQr ,uid: qrToken
+        const newRegister = await EventModel.RegisterMember({name: fullName, mobile_no: phone, email_id:email, message:message
           , organisation:organisation,designation:designation,delegate_type:delegateType,city:city,dietary:dietary });
-        if(newRegister){
-          await injector.sendQrEmail(email, fullName, generatedQr); 
-        }
-        return { fullName, phone, email, qrCode: generatedQr ,msg:1};
+        
+        return { fullName, phone, email ,msg:1};
       } 
   }
   else

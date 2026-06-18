@@ -3,8 +3,8 @@
 
   const RegisterMember= async (payload) => {
     try{ 
-    const queryValues = [payload.uid, payload.name, payload.email_id, payload.mobile_no,payload.organisation,payload.designation,payload.delegate_type,payload.city,payload.dietary, payload.message , payload.qr_code, 1, 0];
-    const query = `INSERT INTO registered_members(uid, name, email_id, mobile_no, organisation, designation, delegate_type, city, dietary, message , qr_code, register_status,attendance) VALUES (?,?,?,?,?,?, ?, ?, ? ,? , ?, ?, ?)`;
+    const queryValues = [ payload.name, payload.email_id, payload.mobile_no,payload.organisation,payload.designation,payload.delegate_type,payload.city,payload.dietary, payload.message , 0, 0];
+    const query = `INSERT INTO registered_members( name, email_id, mobile_no, organisation, designation, delegate_type, city, dietary, message , register_status,attendance) VALUES (?,?,?,?, ?, ?, ? ,? , ?, ?, ?)`;
     const [result] = await db.execute(query, queryValues);
     
     if (result.affectedRows === 0) {

@@ -36,7 +36,7 @@ const db = require("../config/db");
     try{ 
       const param = [payload.token];
       const query1 = `Select admin_token from admin `;
-      const [result1] = await db.execute(query);
+      const [result1] = await db.execute(query1);
       const query = `Select admin_token from admin where admin_token = ?`;
       const [result] = await db.execute(query,param);
        if(result1.length > 0 && result.length == 0 ){
@@ -47,8 +47,8 @@ const db = require("../config/db");
       }
       else
       {
-        const query = `SELECT (SELECT JSON_ARRAYAGG(JSON_OBJECT('name', name,'email_id', email_id,'mobile_no', mobile_no,'registered_date',registered_date)) FROM registered_members) AS participants,
-        (SELECT JSON_ARRAYAGG(JSON_OBJECT('name', name,'email_id', email_id,'mobile_no', mobile_no,'registered_date',registered_date)) FROM registered_members WHERE attendance = 1) AS checkedIn;`;
+        const query = `SELECT (SELECT JSON_ARRAYAGG(JSON_OBJECT('name', name,'email_id', email_id,'mobile_no', mobile_no,'registered_date',registered_date)) FROM registered_members WHERE register_status = 1) AS participants,
+        (SELECT JSON_ARRAYAGG(JSON_OBJECT('name', name,'email_id', email_id,'mobile_no', mobile_no,'registered_date',registered_date)) FROM registered_members WHERE register_status = 1 and attendance = 1) AS checkedIn;`;
         const [result1] = await db.execute(query);
         return result1;
       }
@@ -64,6 +64,46 @@ const db = require("../config/db");
   }
   }
 
+  const getWaitingMembers= async (payload) => {
+    try{ 
+     
+        const param = [0];
+        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ?`;
+        console.log(query)
+        const [result1] = await db.execute(query, param);
+        console.log(query)
+        return result1;
+      
+      
+    
+     } catch (error) {
+    console.error(' Error:', error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
+
+   const manageRegistration= async (payload) => {
+    try{       
+        const params = [payload.register_status, payload.uid,payload.qr_code, payload.register_id];
+        const query = `Update registered_members set register_status = ? , uid = ?, qr_code = ? where register_id = ?`;
+        const [result1] = await db.execute(query,params);
+        console.log(result1.affectedRows)
+        return result1.affectedRows == 1 ? {success:true} : {success: false}; 
+      
+    
+     } catch (error) {
+    console.error(' Error:', error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
   
   const logout= async (payload) => {
     try{ 
@@ -85,6 +125,8 @@ const db = require("../config/db");
   module.exports = {
     adminDetail,
     verifyLogin,
-    logout,
-    getParticipants
+    getWaitingMembers,
+    manageRegistration,
+    getParticipants,
+    logout
 };

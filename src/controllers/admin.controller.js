@@ -34,6 +34,44 @@ const participantDetails = async(req,res) =>{
     }
 }
 
+const manageMembers = async(req,res) =>{
+    try{
+        if(req.headers.authorization){
+            const results = await adminService.manageRegistration(req.headers.authorization, req.body);
+            if(results.success == true)
+                return res.status(200).json({ success: true, data: results.message}); 
+            else
+                return res.status(500).json({ success: false, message: 'Please login to manage members' });   
+        }
+        else
+        {
+            return res.status(404).json({ success: false, message: "Please login to manage members."});    
+        }
+    }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
+const waitingMemberDetails = async(req,res) =>{
+    try{
+        if(req.headers.authorization){
+            const results = await adminService.waitingMember(req.headers.authorization);
+            if(results.length > 0)
+                return res.status(200).json({ success: true, data: results}); 
+            else
+                return res.status(500).json({ success: false, message: 'No waiting members found' });   
+        }
+        else
+        {
+            return res.status(404).json({ success: false, message: "Please login to view data."});    
+        }
+    }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
 const logout = async(req,res) =>{
     try{
         const param = req.body;
@@ -51,5 +89,7 @@ const logout = async(req,res) =>{
 module.exports = {
     login,
     participantDetails,
+    manageMembers,
+    waitingMemberDetails,
     logout
 }

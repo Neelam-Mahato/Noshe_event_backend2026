@@ -14,21 +14,21 @@ const registerMember = async(req,res) =>{
         else{
             const newRegister = await eventService.registerService(registerData);
             if(newRegister.msg == 0){
-                return res.status(500).json({ success: false, message: 'Failed to register member.You are not a member of the company' });
+                return res.status(500).json({ success: false, message: 'You are not a valid member.' });
             }
             else if(newRegister.msg == 2){
                 return res.status(500).json({ success: false, message: 'Some error occurred. Failed to register member.' });  
             }
             else if(newRegister.msg == 4){
-                return res.status(500).json({ success: false, message: 'You have already registered' });  
+                return res.status(500).json({ success: false, message: 'You have already applied for registration' });  
             }
             else{
-                return res.status(201).json({ success: true, message: "Registered successfully" });
+                return res.status(201).json({ success: true, message: "Applied. You will receive an email notification once approved by admin." });
             }
     }
     }
     catch (error){
-         return res.status(500).json({ success: false, message: 'Failed to register member.' });
+         return res.status(500).json({ success: false, message: 'Failed to register.' });
     }
 }
 
