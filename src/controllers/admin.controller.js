@@ -1,99 +1,95 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt');
-const QRCode = require('qrcode');
-const {adminModel} = require("../models/index");
-const injector = require('../functions/index');
+const { adminService } = require('../services');
 
-const loginVerify = async(loginData) => {
-  try{
-        const token = jwt.sign( { memberId: loginData.username },process.env.JWT_SECRET,{ expiresIn: '1d' });
-        const adminResult = await adminModel.adminDetail(); 
-        if(adminResult[0].admin_username == loginData.username )
-        {
-            if(await bcrypt.compare(loginData.password, adminResult[0].admin_password)){
-                const verifyData = await adminModel.verifyLogin({password:loginData.password, username: loginData.username,token:token});
-                if(verifyData.success == true)
-                    return { success: true,uid:adminResult[0].admin_uid,token:token,message: "You have logged in successfully"};
-                else
-                    return { success: false,message: "Some error occurred"};
-            }
+const login = async(req,res) =>{
+    try{
+        const loginDetail = req.body;
+        const loginResult = await adminService.loginVerify(loginDetail);
+        console.log(loginResult)
+        if(loginResult.success == true)
+            return res.status(200).json(loginResult);
+        else
+            return res.status(500).json(loginResult);
+    }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
+const participantDetails = async(req,res) =>{
+    try{
+        if(req.headers.authorization){
+            const results = await adminService.getParticipantData(req.headers.authorization);
+            if(results.length > 0)
+                return res.status(200).json({ success: true, data: results}); 
             else
-                return { success: false,message: "You have entered wrong password.Please rectify"};
+                return res.status(500).json({ success: false, message: 'Please login to view participant details' });   
         }
         else
-            return { success: false,message: "You have entered wrong username.Please rectify"};
-    }
-    catch(error){
-        return error;
-  }  
-}
-
-const getParticipantData = async(participantsData) => {
-  try{
-        const participantData = await adminModel.getParticipants({token:participantsData});
-        return  participantData;
-    }
-    catch(error){
-        return error;
-    }  
-}
-
-const waitingMember = async(memberData) => {
-  try{
-        const participantData = await adminModel.getWaitingMembers({token:memberData});
-        return  participantData;
-    }
-    catch(error){
-        return error;
-    }  
-}
-
-const manageRegistration = async(header, body) => {
-  try{
-        let generatedQr = null;
-        let qrToken = null;
-        if(body.aproval_status == 1){
-            const { randomUUID } = require('crypto');
-            qrToken = randomUUID();
-            const qrPayload = qrToken;
-            generatedQr = await QRCode.toDataURL(qrPayload);
-        } else {
-            qrToken = null;
-            generatedQr = null;
-        }
-        const participantData = await adminModel.manageRegistration({register_status:body.register_status, register_id:body.register_id,uid:qrToken,qr_code:generatedQr});
-        if(participantData.success == true && body.register_id == 1){
-            await injector.sendQrEmail(body.email, body.name, generatedQr); 
-            return  {success: true,message: "Register request approved"};
-        }
-        else if(participantData.success == true && body.register_id == 2)
         {
-            await injector.sendQrEmail(body.email, body.name,null); 
-            return  {success: true,message: "Register request declined"};
-        }
-        else {
-            return  {success: false}; 
+            return res.status(404).json({ success: false, message: "Please login to view data."});    
         }
     }
-    catch(error){
-        return error;
-    }  
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
 }
 
-const logoutSession = async(logoutData) => {
-  try{
-        const verifyData = await adminModel.logout({uid: logoutData.uid});
-        return  verifyData;
+const manageMembers = async(req,res) =>{
+    try{
+        if(req.headers.authorization){
+            const results = await adminService.manageRegistration(req.headers.authorization, req.body);
+            if(results.success == true)
+                return res.status(200).json({ success: true, data: results.message}); 
+            else
+                return res.status(500).json({ success: false, message: 'Please login to manage members' });   
+        }
+        else
+        {
+            return res.status(404).json({ success: false, message: "Please login to manage members."});    
+        }
     }
-    catch(error){
-        return error;
-  }  
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
+const waitingMemberDetails = async(req,res) =>{
+    try{
+        if(req.headers.authorization){
+            const results = await adminService.waitingMember(req.headers.authorization);
+            if(results.length > 0)
+                return res.status(200).json({ success: true, data: results}); 
+            else
+                return res.status(500).json({ success: false, message: 'No waiting members found' });   
+        }
+        else
+        {
+            return res.status(404).json({ success: false, message: "Please login to view data."});    
+        }
+    }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
+const logout = async(req,res) =>{
+    try{
+        const param = req.body;
+        const result = await adminService.logoutSession(param);
+        if(result.success == true)
+            return res.status(200).json({ success: true, message: "Logged out succesfully"}); 
+        else
+            return res.status(500).json({ success: false, message: "Some error occured"}); 
+    }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
 }
 
 module.exports = {
-    loginVerify,
-    getParticipantData,
-    waitingMember,
-    manageRegistration,
-    logoutSession
+    login,
+    participantDetails,
+    manageMembers,
+    waitingMemberDetails,
+    logout
 }
