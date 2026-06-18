@@ -41,7 +41,7 @@ const manageMembers = async(req,res) =>{
             if(results.length > 0)
                 return res.status(200).json({ success: true, data: results}); 
             else
-                return res.status(500).json({ success: false, message: 'Please login to manage members' });   
+                return res.status(500).json({ success: false, message: 'No waiting members' });   
         }
         else
         {
