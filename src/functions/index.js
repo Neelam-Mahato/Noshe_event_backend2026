@@ -1,12 +1,15 @@
  const nodemailer = require('nodemailer');
-
+ const email = "nosheindia.2026@gmail.com";
+ const pass = "pyso ehtv xpls ckmo";
+const port = 587;
+const host = "smtp.gmail.com"
  const transporter = nodemailer.createTransport({
-   host: process.env.EMAIL_HOST,      
-   port: parseInt(process.env.EMAIL_PORT || '587'), 
+   host: host,      
+   port: parseInt(port || '587'), 
    secure: false,                    
    auth: {
-     user: process.env.EMAIL_USER,    
-     pass: process.env.EMAIL_PASS     
+     user: email,    
+     pass: pass     
    }
  });
 
@@ -16,7 +19,7 @@
       const base64Data = qrCodeBase64 != null? qrCodeBase64.split("base64,")[1] : null;
 
       const mailOptions = {
-        from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+        from: `"Your App Team" <${email}>`,
         to: recipientEmail,
         subject: base64Data ? `Your Registration Security QR Code` : `Request declined`,
         html: `
@@ -48,7 +51,7 @@ console.log(mailOptions)
    async function sendOtp(otp,recipientEmail) {
     try {
       const mailOptions = {
-        from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+        from: `"Your App Team" <${email}>`,
         to: recipientEmail,
         subject: 'Your Registration Security QR Code',
         html: `
