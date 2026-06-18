@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const {adminModel} = require("../models/index");
 
 const loginVerify = async(loginData) => {
-  try{
+  try{ 
         const token = jwt.sign( { memberId: loginData.username },process.env.JWT_SECRET,{ expiresIn: '1d' });
         const adminResult = await adminModel.adminDetail(); 
         if(adminResult[0].admin_username == loginData.username )
