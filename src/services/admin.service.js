@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const QRCode = require('qrcode');
 const {adminModel} = require("../models/index");
 const injector = require('../functions/index');
 
@@ -67,7 +68,7 @@ const manageRegistration = async(header, body) => {
         }
         else
         {
-            await injector.sendQrEmail(participantData.email, participantData.name,null); 
+            await injector.sendQrEmail(body.email, body.name,null); 
             return  {success: true,message: "Register request declined"};
         }
     }
