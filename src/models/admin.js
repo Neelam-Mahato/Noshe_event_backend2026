@@ -79,7 +79,7 @@ const db = require("../config/db");
       }
       else
       {
-        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE registration_status = ${0}`;
+        const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ${0}`;
         const [result1] = await db.execute(query);
         return result1;
       }
