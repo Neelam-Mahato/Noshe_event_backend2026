@@ -65,10 +65,10 @@ const manageRegistration = async(header, body) => {
         console.log("service",participantData)
         if(participantData.success == true ){
           if( body.register_status == 1){
-            await injector.sendQrEmail(body.email, body.name, generatedQr); 
+            // await injector.sendQrEmail(body.email, body.name, generatedQr); 
             return  {success: true,message: "Register request approved"};
           }else{
-            await injector.sendEmail(body.email, body.name); 
+            // await injector.sendEmail(body.email, body.name); 
             return  {success: true,message: "Register request declined"};
         }
         }
