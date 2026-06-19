@@ -61,10 +61,10 @@
           return {success:"false", message:"Not a registered member"}
          }
          else if(result.length == 1){
-          if(result[0].attendance == 1){
+          if(result[0].attendance === 1){
             return {success:"false", message:"Already scanned and attendance marked"}
           }
-          else if(result[0].attendance == 0){
+          else if(result[0].attendance === 0){
               const queryParam = [1, payload.uid];
               const query = `Update registered_members Set attendance = ? where uid = ?`;
               await db.execute(query,queryParam);
