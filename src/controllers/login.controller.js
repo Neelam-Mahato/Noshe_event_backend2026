@@ -1,4 +1,5 @@
 const { loginService } = require('../services');
+const injector = require('../functions/index');
 
 const loginOtp = async(req,res) =>{
     try{
@@ -10,7 +11,6 @@ const loginOtp = async(req,res) =>{
         else{
                 res.status(200).json({ success: true, message: loginResult.message });
                 await injector.sendOtp(otp,loginData.email);
-
         }
 
     }
