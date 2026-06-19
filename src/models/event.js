@@ -56,6 +56,7 @@
 
           const query = `SELECT * from registered_members where uid=?`;
           const [result] = await db.execute(query,queryValues);
+          console.log(result)
          if(result.length == 0){
           return {success:"false", message:"Not a registered member"}
          }
