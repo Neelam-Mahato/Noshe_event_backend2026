@@ -8,6 +8,7 @@ const loginMember = async(loginData) => {
   try{
     const otp = crypto.randomInt(100000, 999999);
     const loginDatas = await eventModel.checkEmail({otp:otp, email_id: loginData.email});
+    loginDatas.otp = otp;
     return  loginDatas;
   }
   catch(error){
