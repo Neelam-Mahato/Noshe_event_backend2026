@@ -50,7 +50,7 @@ WHERE 1=1`;
           query += ` AND es.speaker_name IN (${payload.speakers.map(() => '?').join(',')})`;
           params.push(...payload.speakers);
       }
-      query += ` GROUP BY s.session_id` ;
+      query += ` GROUP BY s.session_id ORDER BY s.session_id ASC` ;
     const [result] = await db.execute(query, params);
     const response = {
     day1: result.filter(item => item.session_day === 'Day 1'),
