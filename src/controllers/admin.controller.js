@@ -78,12 +78,16 @@ const sendMails = async(req,res) =>{
             if(req.body.register_status == 1){
                 console.log(1)
                 const qrCode = await adminService.getQrCode(req.body.register_id);
-                console.log(1,qrCode)
+                console.log(1,qrCode)        
+                 res.status(200).json({ success: true, message: 'Email sent successful' });
+
                  await injector.sendQrEmail(req.body.email, req.body.name, qrCode); 
             }
-            else
+            else{
+                         res.status(200).json({ success: true, message: 'Email sent successful' });
                 await injector.sendEmail(req.body.email, req.body.name, null);  
-         res.status(200).json({ success: true, message: 'Email sent successful' });
+
+            }
         }
     catch (error){
          return res.status(500).json({ success: false, message: 'Failed to login' });
