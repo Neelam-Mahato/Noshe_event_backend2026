@@ -1,4 +1,5 @@
 const { adminService } = require('../services');
+const injector = require('../functions/index');
 
 const login = async(req,res) =>{
     try{
@@ -75,7 +76,9 @@ const waitingMemberDetails = async(req,res) =>{
 const sendMails = async(req,res) =>{
     try{
             if(req.register_status == 1){
+                console.log(1)
                 const qrCode = await adminService.getQrCode(req.body.register_id);
+                console.log(1,qrCode)
                  await injector.sendQrEmail(req.body.email, req.body.name, qrCode); 
             }
             else
