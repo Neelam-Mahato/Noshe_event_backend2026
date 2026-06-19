@@ -12,8 +12,8 @@ const loginVerify = async(loginData) => {
         const adminResult = await adminModel.adminDetail(); 
         for(let i=0;i<adminResult.length;i++){
             if(adminResult[i].admin_username == loginData.username ){
-                p = 1;      
                 {
+                    p = 1;      
                     if(await bcrypt.compare(loginData.password, adminResult[i].admin_password) ){  
                         m = 1;
                 }
