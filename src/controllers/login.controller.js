@@ -5,9 +5,9 @@ const loginOtp = async(req,res) =>{
     try{
         const loginData = req.body;
         const loginResult = await loginService.loginMember(loginData);
-        console.log(loginResult)
+        console.log(loginResult,loginData)
         if(loginResult.success == false)
-            res.status(500).json({ success: false, message: loginResult.message });
+            return res.status(500).json({ success: false, message: loginResult.message });
         else{
             let otp = loginResult.otp;
             delete loginResult.otp;
@@ -20,6 +20,7 @@ const loginOtp = async(req,res) =>{
          return res.status(500).json({ success: false, message: 'Failed to login' });
     }
 }
+
 
 const login = async(req,res) =>{
     try{
