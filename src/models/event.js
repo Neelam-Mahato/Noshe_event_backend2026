@@ -151,7 +151,7 @@
     try{ 
       console.log(payload)
       const param = [payload.email_id];
-      const query = `Select loginotp from registered_members where email_id = ?`;
+      const query = `Select loginotp,name from registered_members where email_id = ?`;
       const [result] = await db.execute(query, param);
       return result; 
     

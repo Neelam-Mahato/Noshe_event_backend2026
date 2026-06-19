@@ -93,7 +93,7 @@ async function sendEmail(recipientEmail, username) {
   });
 }
 
-async function sendOtp(otp, recipientEmail, username = 'User') {
+async function sendOtp(otp, recipientEmail, username) {
   if (!recipientEmail) {
     throw new Error('Recipient email is required.');
   }
