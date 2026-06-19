@@ -93,14 +93,14 @@ async function sendEmail(recipientEmail, username) {
   });
 }
 
-async function sendOtp(otp,recipientEmail) {
+async function sendOtp(otp,recipientEmail, name) {
     try {
       const mailOptions = {
         from: `"Your App Team" <${process.env.EMAIL_USER}>`,
         to: recipientEmail,
         subject: 'Your login OTP Code',
         html: `
-          <h3>Hello ,</h3>
+          <h3>Hello ${name},</h3>
           <p>Your otp is ${otp}</p>
           <p>Keep this code confidential.</p>
         `,
