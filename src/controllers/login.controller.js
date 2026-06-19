@@ -9,10 +9,7 @@ const loginOtp = async(req,res) =>{
         if(loginResult.success == false)
             return res.status(500).json({ success: false, message: loginResult.message });
         else{
-            let otp = loginResult.otp;
-            delete loginResult.otp;
             res.status(200).json({ success: true, message: loginResult.message });
-            await injector.sendOtp(otp,loginData.email);
         }
 
     }
