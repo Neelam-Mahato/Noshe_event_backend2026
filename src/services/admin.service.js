@@ -6,9 +6,16 @@ const injector = require('../functions/index');
 
 const loginVerify = async(loginData) => {
   try{
+    var p = 0;
         const token = jwt.sign( { memberId: loginData.username },process.env.JWT_SECRET,{ expiresIn: '1d' });
         const adminResult = await adminModel.adminDetail(); 
-        if(adminResult[0].admin_username == loginData.username )
+        for(let i=0;i<adminResult.length;i++){
+            if(adminResult[i].admin_username == loginData.username ){
+                p = 1;        
+                break;
+            }
+        }
+        if(p == 1 )
         {
             if(await bcrypt.compare(loginData.password, adminResult[0].admin_password)){
                 const verifyData = await adminModel.verifyLogin({password:loginData.password, username: loginData.username,token:token});
