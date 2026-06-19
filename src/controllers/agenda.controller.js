@@ -26,8 +26,14 @@ const favoriteAgenda = async(req,res) =>{
     try{
         const favoriteData = req.body;
         const agendaData = await agendaService.agendaFavorite(favoriteData);
-        if(agendaData.success == true)
-            return res.status(200).json({ success: true, message: "Favorite updated successfully" });
+        if(agendaData.success == true ){
+            if(favoriteData.favorite == 1){
+                return res.status(200).json({ success: true, message: "Favorite added successfully" });
+            }
+            else{
+                return res.status(200).json({ success: true, message: "Favorite removed successfully" });  
+            }
+        }
         else
             return res.status(500).json({ success: true, message: "Favorite updation failed" });
     }
