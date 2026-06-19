@@ -75,14 +75,14 @@ const waitingMemberDetails = async(req,res) =>{
 
 const sendMails = async(req,res) =>{
     try{
-            if(req.register_status == 1){
+            if(req.body.register_status == 1){
                 console.log(1)
                 const qrCode = await adminService.getQrCode(req.body.register_id);
                 console.log(1,qrCode)
                  await injector.sendQrEmail(req.body.email, req.body.name, qrCode); 
             }
             else
-                await injector.sendEmail(req,body.email, req.body.name, null);  
+                await injector.sendEmail(req.body.email, req.body.name, null);  
         }
     catch (error){
          return res.status(500).json({ success: false, message: 'Failed to login' });
