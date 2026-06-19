@@ -6,9 +6,12 @@ const loginOtp = async(req,res) =>{
         const loginResult = await loginService.loginMember(loginData);
         console.log(loginResult)
         if(loginResult.success == false)
-            return res.status(500).json({ success: false, message: loginResult.message });
-        else
-            return res.status(200).json({ success: true, message: loginResult.message });
+            res.status(500).json({ success: false, message: loginResult.message });
+        else{
+                res.status(200).json({ success: true, message: loginResult.message });
+                await injector.sendOtp(otp,loginData.email);
+
+        }
 
     }
     catch (error){
