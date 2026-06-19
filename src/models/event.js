@@ -147,6 +147,24 @@
   }
   }
 
+   const getOtp= async (payload) => {
+    try{ 
+      console.log(payload)
+      const param = [payload.email];
+      const query = `Select loginotp from registered_members where email_id = ?`;
+      const [result] = await db.execute(query, param);
+      return result; 
+    
+     } catch (error) {
+    console.error(' Error:', error);
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
+
   
   const logout= async (payload) => {
     try{ 
@@ -173,5 +191,6 @@ module.exports = {
     checkEmail,
     verifyOtp,
     getQr,
+    getOtp,
     logout
 };

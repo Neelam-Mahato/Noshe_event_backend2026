@@ -20,6 +20,8 @@ router.post('/loginOtp',loginController.loginOtp);
 
 router.post('/login',loginController.login);
 
+router.post('/otp',loginController.otp);
+
 router.post('/showQr',auth.verifyToken,loginController.memberDetails);
 
 router.post('/logout',loginController.logout);
