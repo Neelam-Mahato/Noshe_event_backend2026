@@ -6,27 +6,33 @@ const injector = require('../functions/index');
 
 const loginVerify = async(loginData) => {
   try{
-    var p = 0;
-    var m = 0;
+    let p = 0;
+    let m = 0;
+    let matchedIndex = -1;
+    let uid = 0;
         const token = jwt.sign( { memberId: loginData.username },process.env.JWT_SECRET,{ expiresIn: '1d' });
         const adminResult = await adminModel.adminDetail(); 
+        const cleanPassword = String(loginData.password).replace(/[\r\n\t]/g, '').trim();
         for(let i=0;i<adminResult.length;i++){
             if(adminResult[i].admin_username == loginData.username ){
                 {
                     p = 1;      
-                    if(await bcrypt.compare(loginData.password, adminResult[i].admin_password) ){  
+
+                    if(await bcrypt.compare(cleanPassword, adminResult[i].admin_password) ){  
                         m = 1;
+                        matchedIndex = i;
+                        uid = adminResult[i].admin_uid;
+                        break;
+                    }
                 }
-                break;
             }
         }
-    }
-        if(p == 1 )
+        if(p === 1 )
         {
-            if(m == 1){
-                const verifyData = await adminModel.verifyLogin({password:loginData.password, username: loginData.username,token:token});
+            if(m === 1 && matchedIndex !== -1){
+                const verifyData = await adminModel.verifyLogin({ username: loginData.username,token:token});
                 if(verifyData.success == true)
-                    return { success: true,uid:adminResult[0].admin_uid,token:token,message: "You have logged in successfully"};
+                    return { success: true,uid:uid,token:token,message: "You have logged in successfully"};
                 else
                     return { success: false,message: "Some error occurred"};
             }
@@ -35,7 +41,6 @@ const loginVerify = async(loginData) => {
         }
         else
             return { success: false,message: "You have entered wrong username.Please rectify"};
-    
     }
     catch(error){
         return error;
