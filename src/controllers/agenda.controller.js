@@ -27,9 +27,9 @@ const favoriteAgenda = async(req,res) =>{
         const favoriteData = req.body;
         const agendaData = await agendaService.agendaFavorite(favoriteData);
         if(agendaData.success == true)
-            return res.status(200).json({ success: true, data: "Favorite updated successfully" });
+            return res.status(200).json({ success: true, message: "Favorite updated successfully" });
         else
-            return res.status(500).json({ success: true, data: "Favorite updation failed" });
+            return res.status(500).json({ success: true, message: "Favorite updation failed" });
     }
     catch (error){
          return res.status(500).json({ success: false, message: 'Failed to retrive agenda filters.' });
