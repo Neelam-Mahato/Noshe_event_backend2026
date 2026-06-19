@@ -72,6 +72,20 @@ const waitingMemberDetails = async(req,res) =>{
     }
 }
 
+const sendMails = async(req,res) =>{
+    try{
+            if(req.register_status == 1){
+                const qrCode = await adminService.getQrCode(req.body.register_id);
+                 await injector.sendQrEmail(req.body.email, req.body.name, qrCode); 
+            }
+            else
+                await injector.sendEmail(req,body.email, req.body.name, null);  
+        }
+    catch (error){
+         return res.status(500).json({ success: false, message: 'Failed to login' });
+    }
+}
+
 const logout = async(req,res) =>{
     try{
         const param = req.body;
@@ -86,10 +100,12 @@ const logout = async(req,res) =>{
     }
 }
 
+
 module.exports = {
     login,
     participantDetails,
     manageMembers,
     waitingMemberDetails,
+    sendMails,
     logout
 }
