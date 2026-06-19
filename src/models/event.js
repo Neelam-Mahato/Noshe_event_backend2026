@@ -61,7 +61,6 @@
           return {success:"false", message:"Not a registered member"}
          }
          else if(result.length == 1){
-           console.log(result[0].attendance);
           if(result[0].attendance === 1){
             return {success:"false", message:"Already scanned and attendance marked"}
           }
