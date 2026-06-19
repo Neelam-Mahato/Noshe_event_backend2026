@@ -8,6 +8,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
   tls: {
     rejectUnauthorized: false,
   },
@@ -26,7 +29,17 @@ async function sendMail({ to, subject, html, attachments = [] }) {
     attachments,
   };
 
-  return transporter.sendMail(mailOptions);
+  try {
+    await transporter.verify();
+    return await transporter.sendMail(mailOptions);
+  } catch (error) {
+    const message =
+      error?.code === 'ETIMEDOUT'
+        ? 'SMTP timeout. Check EMAIL_HOST/EMAIL_PORT, firewall/network access, and Gmail app password.'
+        : error?.message || 'Failed to send email';
+
+    throw new Error(message);
+  }
 }
 
 async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
