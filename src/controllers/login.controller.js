@@ -23,13 +23,10 @@ const loginOtp = async(req,res) =>{
 
 const otp = async(req,res) =>{
     try{
-        const loginData = req.body;
-        const loginResult = await loginService.otp(loginData);
+        const loginResult = await loginService.otp(req.body.email);
         console.log(loginResult)
         res.status(200).json({ success: true, message: "Otp sent" });
             await injector.sendOtp(loginResult[0].loginotp,loginData.email);
-        
-
     }
     catch (error){
          return res.status(500).json({ success: false, message: 'Failed to login' });

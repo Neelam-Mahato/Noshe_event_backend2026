@@ -150,7 +150,7 @@
    const getOtp= async (payload) => {
     try{ 
       console.log(payload)
-      const param = [payload.email];
+      const param = [payload.email_id];
       const query = `Select loginotp from registered_members where email_id = ?`;
       const [result] = await db.execute(query, param);
       return result; 

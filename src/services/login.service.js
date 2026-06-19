@@ -17,7 +17,7 @@ const loginMember = async(loginData) => {
 
 const otp = async(loginData) => {
   try{
-    const loginDatas = await eventModel.getOtp({email_id: loginData.email});
+    const loginDatas = await eventModel.getOtp({email_id: loginData});
     return  loginDatas;
   }
   catch(error){
