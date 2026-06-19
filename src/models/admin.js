@@ -66,16 +66,12 @@ const db = require("../config/db");
 
   const getWaitingMembers= async (payload) => {
     try{ 
-     
         const param = [0];
         const query = `SELECT  register_id, name, email_id, mobile_no,creation_date FROM registered_members WHERE register_status = ?`;
         console.log(query)
         const [result1] = await db.execute(query, param);
         console.log(query)
         return result1;
-      
-      
-    
      } catch (error) {
     console.error(' Error:', error);
 
@@ -86,6 +82,22 @@ const db = require("../config/db");
   }
   }
 
+  
+  const getQrCod= async (payload) => {
+    try{ 
+        const param = [payload.register_id];
+        const query = `SELECT qr_code FROM registered_members WHERE register_id= ?`;
+        console.log(query)
+        const [result1] = await db.execute(query, param);
+        return result1[0].qr_code;
+     } catch (error) {
+
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+  }
    const manageRegistration= async (payload) => {
     try{       
         const params = [payload.register_status, payload.uid,payload.qr_code, payload.register_id];
@@ -128,5 +140,6 @@ const db = require("../config/db");
     getWaitingMembers,
     manageRegistration,
     getParticipants,
+    getQrCod,
     logout
 };

@@ -48,6 +48,15 @@ const waitingMember = async(memberData) => {
     }  
 }
 
+const getQrCode = async(memberData) => {
+  try{
+        const participantData = await adminModel.getQrCod({register_id:memberData});
+        return  participantData;
+    }
+    catch(error){
+        return error;
+    }  
+}
 const manageRegistration = async(header, body) => {
   try{
         let generatedQr = null;
@@ -65,10 +74,8 @@ const manageRegistration = async(header, body) => {
         console.log("service",participantData)
         if(participantData.success == true ){
           if( body.register_status == 1){
-            // await injector.sendQrEmail(body.email, body.name, generatedQr); 
             return  {success: true,message: "Register request approved"};
           }else{
-            // await injector.sendEmail(body.email, body.name); 
             return  {success: true,message: "Register request declined"};
         }
         }
@@ -100,5 +107,6 @@ module.exports = {
     getParticipantData,
     waitingMember,
     manageRegistration,
+    getQrCode,
     logoutSession
 }

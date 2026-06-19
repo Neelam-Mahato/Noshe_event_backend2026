@@ -26,6 +26,8 @@ router.post('/logout',loginController.logout);
 
 router.post('/admin/login',adminController.login);
 
+router.post('/admin/sendMail',auth.verifyToken,adminController.sendMails);
+
 router.get('/admin/eventRecord',auth.verifyToken,adminController.participantDetails);
 
 router.post('/admin/manageMember',auth.verifyToken,adminController.manageMembers);
