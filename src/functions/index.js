@@ -94,6 +94,7 @@ async function sendEmail(recipientEmail, username) {
 }
 
 async function sendOtp(otp, recipientEmail, username) {
+  console.log(otp, recipientEmail, username)
   if (!recipientEmail) {
     throw new Error('Recipient email is required.');
   }
