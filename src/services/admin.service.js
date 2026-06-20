@@ -27,9 +27,11 @@ const loginVerify = async(loginData) => {
                 }
             }
         }
+    console.log(p,m,matchedIndex,uid)
         if(p === 1 )
-        {
+        {console.log(11)
             if(m === 1 && matchedIndex !== -1){
+              console.log(11)
                 const verifyData = await adminModel.verifyLogin({ username: loginData.username,token:token});
                 if(verifyData.success == true)
                     return { success: true,uid:uid,token:token,message: "You have logged in successfully"};
