@@ -21,6 +21,7 @@ const db = require("../config/db");
         const param1 = [payload.username];
         const query1 = `Select admin_token from admin where admin_username = ? `;
        const [result1] = await db.execute(query1, param1);
+      console.log(result1[0].admin_token, result1[0].admin_token != null)
       if(result1[0].admin_token != null || result1[0].admin_token != "" ){
         return {success : false, message: "Already logged In"}
       }
