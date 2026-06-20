@@ -18,10 +18,19 @@ const db = require("../config/db");
 
   const verifyLogin= async (payload) => {
     try{ 
-      const param = [payload.token, payload.username];
+        const param1 = [payload.username];
+        const query1 = `Select admin_token from admin where admin_username = ? `;
+       const [result1] = await db.execute(query1, param1);
+      if(result1[0].admin_token != null || result1[0].admin_token != "" ){
+        return {success : false, message: "Already logged In"}
+      }
+      else{
+         const param = [payload.token, payload.username];
       const query = `Update admin set admin_token = ? where admin_username = ? `;
       const [result] = await db.execute(query, param);
       return result.affectedRows == 1 ? {success:true} : {success: false}; 
+      }
+     
      } catch (error) {
     console.error(' Error:', error);
 

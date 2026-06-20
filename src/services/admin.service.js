@@ -33,6 +33,8 @@ const loginVerify = async(loginData) => {
                 const verifyData = await adminModel.verifyLogin({ username: loginData.username,token:token});
                 if(verifyData.success == true)
                     return { success: true,uid:uid,token:token,message: "You have logged in successfully"};
+                else if(verifyData.success == false && verifyData?.message)
+                    return { success: false,message: verifyData.message};
                 else
                     return { success: false,message: "Some error occurred"};
             }
