@@ -17,7 +17,7 @@ const loginVerify = async(loginData) => {
             if(adminResult[i].admin_username == loginData.username ){
                 {
                     p = 1;      
-
+console.log(cleanPassword, adminResult[i].admin_password)
                     if(await bcrypt.compare(cleanPassword, adminResult[i].admin_password) ){  
                         m = 1;
                         matchedIndex = i;
