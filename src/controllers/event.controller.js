@@ -13,10 +13,11 @@ const registerMember = async(req,res) =>{
         }
         else{
             const newRegister = await eventService.registerService(registerData);
-            if(newRegister.msg == 0){
-                return res.status(500).json({ success: false, message: 'You are not a valid member.' });
-            }
-            else if(newRegister.msg == 2){
+            // if(newRegister.msg == 0){
+            //     return res.status(500).json({ success: false, message: 'You are not a valid member.' });
+            // }
+            // else 
+                if(newRegister.msg == 2){
                 return res.status(500).json({ success: false, message: 'Some error occurred. Failed to register member.' });  
             }
             else if(newRegister.msg == 4){

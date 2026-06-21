@@ -5,16 +5,16 @@ const registerService = async(registerData) => {
     console.log(registerData);
      const { fullName, phone, email, message, organisation, designation, delegateType, city, dietary } = registerData;
     var check = 0;
-    const members = await EventModel.getMembers();
+    // const members = await EventModel.getMembers();
 
-    for(var i = 0; i<members.length;i++){
-      if(members[i].email_id == email || members[i].mobile_no == phone){
-        check = 1;
-        break;
-      }    
-    }
-    if(check == 1){
-      check = 0;
+    // for(var i = 0; i<members.length;i++){
+    //   if(members[i].email_id == email || members[i].mobile_no == phone){
+    //     check = 1;
+    //     break;
+    //   }    
+    // }
+    // if(check == 1){
+      // check = 0;
       const checkRegistration = await EventModel.checkRegisteredMember();
       for(var j = 0; j<checkRegistration.length;j++){
         if(checkRegistration[j].email_id == email && checkRegistration[j].mobile_no == phone){
@@ -33,9 +33,9 @@ const registerService = async(registerData) => {
         
         return { fullName, phone, email ,msg:1};
       } 
-  }
-  else
-    return {msg : 0}
+  // }
+  // else
+  //   return {msg : 0}
   }
    catch(error){
         return {msg : 2 }

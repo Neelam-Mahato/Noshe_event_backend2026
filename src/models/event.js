@@ -35,20 +35,20 @@
   }
   }
 
-  const getMembers= async (payload) => {
-    try{ 
-    const query = `Select * from members`;
-    const [result] = await db.execute(query);
-        return result; 
-     } catch (error) {
-    console.error(' Error:', error);
+  // const getMembers= async (payload) => {
+  //   try{ 
+  //   const query = `Select * from members`;
+  //   const [result] = await db.execute(query);
+  //       return result; 
+  //    } catch (error) {
+  //   console.error(' Error:', error);
 
-    return {
-      success: false,
-      error: error.message
-    };
-  }
-  }
+  //   return {
+  //     success: false,
+  //     error: error.message
+  //   };
+  // }
+  // }
   
     const generateAttendance= async (payload) => {
     try{ 
@@ -187,7 +187,7 @@
 module.exports = {
     RegisterMember,
     checkRegisteredMember,
-    getMembers,
+    // getMembers,
     generateAttendance,
     checkEmail,
     verifyOtp,
