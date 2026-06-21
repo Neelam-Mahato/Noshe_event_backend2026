@@ -17,7 +17,7 @@ const loginVerify = async(loginData) => {
             if(adminResult[i].admin_username == loginData.username ){
                 {
                     p = 1;      
-
+console.log(cleanPassword, adminResult[i].admin_password)
                     if(await bcrypt.compare(cleanPassword, adminResult[i].admin_password) ){  
                         m = 1;
                         matchedIndex = i;
@@ -27,9 +27,11 @@ const loginVerify = async(loginData) => {
                 }
             }
         }
+    console.log(p,m,matchedIndex,uid)
         if(p === 1 )
-        {
+        {console.log(11)
             if(m === 1 && matchedIndex !== -1){
+              console.log(11)
                 const verifyData = await adminModel.verifyLogin({ username: loginData.username,token:token});
                 if(verifyData.success == true)
                     return { success: true,uid:uid,token:token,message: "You have logged in successfully"};
