@@ -94,7 +94,7 @@
       return {success:true, message:"Otp send successfully.Check your email."}
     }
     else if(result.length == 0){
-      return {success:false, message:"Not a registered member"} 
+      return {success:true, message:"Not a registered member"} 
     }
      } catch (error) {
     console.error(' Error:', error);
