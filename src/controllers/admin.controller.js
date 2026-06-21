@@ -61,7 +61,7 @@ const waitingMemberDetails = async(req,res) =>{
             if(results.length > 0)
                 return res.status(200).json({ success: true, data: results}); 
             else
-                return res.status(200).json({ success: false, message: 'No waiting members found' });   
+                return res.status(200).json({ success: false, message: 'No waiting members found' ,data: results});   
         }
         else
         {
