@@ -22,7 +22,7 @@ const participantDetails = async(req,res) =>{
             const results = await adminService.getParticipantData(req.headers.authorization);
             console.log(results)
             if(results.length > 0){
-                const formattedData = result.map(item => ({
+                const formattedData = results.map(item => ({
                     ...item,
                     participants: item.participants ? JSON.parse(item.participants) : [],
                     checkedIn: item.checkedIn ? JSON.parse(item.checkedIn) : []
