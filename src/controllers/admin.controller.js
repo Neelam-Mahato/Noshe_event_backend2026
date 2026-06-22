@@ -20,8 +20,16 @@ const participantDetails = async(req,res) =>{
     try{
         if(req.headers.authorization){
             const results = await adminService.getParticipantData(req.headers.authorization);
-            if(results.length > 0)
+            console.log(results)
+            if(results.length > 0){
+                const formattedData = result.map(item => ({
+                    ...item,
+                    participants: item.participants ? JSON.parse(item.participants) : [],
+                    checkedIn: item.checkedIn ? JSON.parse(item.checkedIn) : []
+                    }));
                 return res.status(200).json({ success: true, data: results}); 
+
+            }
             else
                 return res.status(500).json({ success: false, message: 'Please login to view participant details' });   
         }
