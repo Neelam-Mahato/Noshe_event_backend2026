@@ -24,7 +24,7 @@ const registerMember = async(req,res) =>{
                 return res.status(500).json({ success: false, message: 'You have already applied for registration' });  
             }
             else{
-                return res.status(201).json({ success: true, message: "Applied. You will receive an email notification once approved by admin." });
+                return res.status(201).json({ success: true, message: "Applied. You will receive an email notification in your Inbox or Spam, once approved by admin." });
             }
     }
     }
