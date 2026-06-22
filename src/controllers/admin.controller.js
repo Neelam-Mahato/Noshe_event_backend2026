@@ -27,7 +27,7 @@ const participantDetails = async(req,res) =>{
                     participants: item.participants ? JSON.parse(item.participants) : [],
                     checkedIn: item.checkedIn ? JSON.parse(item.checkedIn) : []
                     }));
-                return res.status(200).json({ success: true, data: results}); 
+                return res.status(200).json({ success: true, data: formattedData}); 
 
             }
             else
