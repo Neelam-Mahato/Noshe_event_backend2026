@@ -41,8 +41,8 @@ const contact = async(req,res) =>{
 async function sendContactMail(data, retries = 3) {
   const mailOptions = {
     from: `"Your App Team" <${process.env.EMAIL_USER}>`,
-    to: data.email,        // see point 2 below
-    replyTo: data.email,
+    to: "nosheundia.2026@gmail.com",        // see point 2 below
+    replyTo: "nosheundia.2026@gmail.com",
     subject: 'New Contact Form Submission',
     html: `
       <h3>New Contact Submission</h3>
