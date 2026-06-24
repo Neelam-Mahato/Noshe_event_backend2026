@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const connectivity = require('../middleware/connectivity');
-const {eventController,agendaControlller, attendanceController,loginController,adminController} = require('../controllers/index')
+const {eventController, agendaControlller, attendanceController, loginController, adminController, contactController} = require('../controllers/index')
 
 router.post('/register',eventController.registerMember);
 
@@ -37,6 +37,8 @@ router.post('/admin/manageMember',auth.verifyToken,adminController.manageMembers
 router.get('/admin/waitingMembers',auth.verifyToken,adminController.waitingMemberDetails);
 
 router.post('/admin/logout',adminController.logout);
+
+router.post('/contactus', contactController.contact)
 
 router.get('/', (req, res) => {
    res.json({ message: 'success' });
