@@ -18,6 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMail({ to, subject, html, attachments = [] }) {
+  console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_USER)
 
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error('Email credentials are missing. Check EMAIL_USER and EMAIL_PASS in the environment.');

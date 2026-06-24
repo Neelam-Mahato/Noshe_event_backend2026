@@ -22,6 +22,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const contact = async(req,res) =>{
+      console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_USER)
+
     try{
         const data = req.body;
         res.status(200).json({ success: true, message: "Submitted successfully" });
