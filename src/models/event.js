@@ -86,7 +86,7 @@
       const param = [payload.email_id]
     const query = `Select * from registered_members where email_id = ?`;
     const [result] = await db.execute(query, param);
-
+ console.log(result)
     if(result.length > 0){
       const params = [payload.otp,payload.email_id];
       const query = `Update registered_members Set loginotp = ? where email_id = ?`;

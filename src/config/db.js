@@ -7,8 +7,8 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'noshe_event2026',
   // port: process.env.DB_PORT || 4000, // 1. Added the TiDB port variable
   ssl: {
-    minVersion: 'TLSv1.2',
-    rejectUnauthorized: true // 2. Forces the required secure SSL connection
+    // minVersion: 'TLSv1.2',
+    rejectUnauthorized: false // 2. Forces the required secure SSL connection
   }
   
 });
