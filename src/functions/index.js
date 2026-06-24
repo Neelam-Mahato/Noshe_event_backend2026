@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
   secure: Number(process.env.EMAIL_PORT || 587) === 465,
   family: 4,
   auth: {
-    user: process.env.EMAIL_USER,
+    user: process.env.EMAIL_KEY,
     pass: process.env.EMAIL_PASS,
   },
   connectionTimeout: 50000,
@@ -18,14 +18,14 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMail({ to, subject, html, attachments = [] }) {
-  console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_USER)
+  console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_KEY)
 
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error('Email credentials are missing. Check EMAIL_USER and EMAIL_PASS in the environment.');
+  if (!process.env.EMAIL_KEY || !process.env.EMAIL_PASS) {
+    throw new Error('Email credentials are missing. Check EMAIL_KEY and EMAIL_PASS in the environment.');
   }
 
   const mailOptions = {
-    from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+    from: `"Your App Team" <${process.env.EMAIL_KEY}>`,
     to,
     subject,
     html,
@@ -97,10 +97,10 @@ async function sendEmail(recipientEmail, username) {
 }
 
 async function sendOtp(otp,recipientEmail, name) {
-  console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_USER)
+  console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_KEY)
     try {
       const mailOptions = {
-        from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+        from: `"Your App Team" <${process.env.EMAIL_KEY}>`,
         to: recipientEmail,
         subject: 'Your login OTP Code',
         html: `
