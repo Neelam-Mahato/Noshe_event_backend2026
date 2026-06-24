@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
+  host: "smtp-relay.brevo.com",
   port: Number(process.env.EMAIL_PORT || 587),
   secure: Number(process.env.EMAIL_PORT || 587) === 465,
   family: 4,
@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMail({ to, subject, html, attachments = [] }) {
-  console.log(process.env.EMAIL_HOST,process.env.EMAIL_KEY,process.env.EMAIL_USER)
+  console.log(process.env.EMAIL_KEY,process.env.EMAIL_USER)
 
   if (!process.env.EMAIL_USER || !process.env.EMAIL_KEY) {
     throw new Error('Email credentials are missing. Check EMAIL_USER and EMAIL_KEY in the environment.');
@@ -97,7 +97,7 @@ async function sendEmail(recipientEmail, username) {
 }
 
 async function sendOtp(otp,recipientEmail, name) {
-  console.log(process.env.EMAIL_HOST,process.env.EMAIL_KEY,process.env.EMAIL_USER)
+  console.log(process.env.EMAIL_KEY,process.env.EMAIL_USER)
     try {
       const mailOptions = {
         from: `"Your App Team" <${process.env.EMAIL_USER}>`,

@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
+  host: "smtp-relay.brevo.com",
   port: 465,
   secure: true,
   debug:true,
@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const contact = async(req,res) =>{
-      console.log(process.env.EMAIL_HOST,process.env.EMAIL_PASS,process.env.EMAIL_USER)
+      console.log(process.env.EMAIL_PASS,process.env.EMAIL_USER)
 
     try{
         const data = req.body;
