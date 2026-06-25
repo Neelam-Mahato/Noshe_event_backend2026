@@ -35,13 +35,14 @@ async function sendMail({ to, subject, html, attachments = [] }) {
   };
 
   try {
-    await transporter.verify();
+    // await transporter.verify();
     await resend.emails.send({
-  from: "onboarding@resend.dev",
-  to: "test@example.com",
-  subject: "Hello",
-  html: "<h1>Email Working</h1>",
-});
+      from: `"Your App Team" <onboarding@resend.dev>"`,
+      to,
+        subject,
+        html,
+        attachments,
+    });
     return await transporter.sendMail(mailOptions);
   } catch (error) {
     const message =
@@ -82,7 +83,7 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
   `;
 
   await resend.emails.send({
-  from: "onboarding@resend.dev",
+  from: "<onboarding@resend.dev>",
   to: recipientEmail,
   subject: "Your Registration Security QR Code",
   html: html,
@@ -102,7 +103,7 @@ async function sendEmail(recipientEmail, username) {
   }
 
   await resend.emails.send({
-  from: "onboarding@resend.dev",
+  from: "<onboarding@resend.dev>",
    to: recipientEmail,
     subject: 'Request declined',
     html: `
