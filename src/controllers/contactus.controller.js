@@ -20,10 +20,10 @@ const contact = async(req,res) =>{
     try{
         const data = req.body;
         res.status(200).json({ success: true, message: "Submitted successfully" });
-    sendContactMail(data).catch(err => {
-        console.error('Mail failed:', err.message);
-        // optionally: save to DB as "pending" for retry, alert yourself, etc.
-    });
+        sendContactMail(data).catch(err => {
+            console.error('Mail failed:', err.message);
+            // optionally: save to DB as "pending" for retry, alert yourself, etc.
+        });
     }
     catch (error){
         res.status(500).json({ success: false, message: 'Some error occured' });
