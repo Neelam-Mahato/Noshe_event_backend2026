@@ -83,7 +83,7 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
   `;
 
   await resend.emails.send({
-  from: "<onboarding@resend.dev>",
+  from: `"Your App Team " <onboarding@resend.dev>`,
   to: recipientEmail,
   subject: "Your Registration Security QR Code",
   html: html,
@@ -103,7 +103,7 @@ async function sendEmail(recipientEmail, username) {
   }
 
   await resend.emails.send({
-  from: "<onboarding@resend.dev>",
+  from: `"Your App Team " <onboarding@resend.dev>`,
    to: recipientEmail,
     subject: 'Request declined',
     html: `
