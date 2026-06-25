@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   family: 4,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    pass: process.env.EMAIL_KEY,
   },
   connectionTimeout: 50000,
   greetingTimeout: 50000,
@@ -18,8 +18,8 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendMail({ to, subject, html, attachments = [] }) {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error('Email credentials are missing. Check EMAIL_USER and EMAIL_PASS in the environment.');
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_KEY) {
+    throw new Error('Email credentials are missing. Check EMAIL_USER and EMAIL_KEY in the environment.');
   }
 
   const mailOptions = {
