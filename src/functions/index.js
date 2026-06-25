@@ -1,4 +1,7 @@
 const nodemailer = require('nodemailer');
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.API_KEY);
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -33,6 +36,12 @@ async function sendMail({ to, subject, html, attachments = [] }) {
 
   try {
     await transporter.verify();
+    await resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: "test@example.com",
+  subject: "Hello",
+  html: "<h1>Email Working</h1>",
+});
     return await transporter.sendMail(mailOptions);
   } catch (error) {
     const message =
@@ -72,12 +81,19 @@ async function sendQrEmail(recipientEmail, username, qrCodeBase64) {
     <p>Keep this code confidential.</p>
   `;
 
-  await sendMail({
-    to: recipientEmail,
-    subject: 'Your Registration Security QR Code',
-    html,
-    attachments,
-  });
+  await resend.emails.send({
+  from: "onboarding@resend.dev",
+  to: recipientEmail,
+  subject: "Your Registration Security QR Code",
+  html: html,
+  attachments:attachments
+});
+  // await sendMail({
+  //   to: recipientEmail,
+  //   subject: 'Your Registration Security QR Code',
+  //   html,
+  //   attachments,
+  // });
 }
 
 async function sendEmail(recipientEmail, username) {
@@ -85,14 +101,23 @@ async function sendEmail(recipientEmail, username) {
     throw new Error('Recipient email is required.');
   }
 
-  await sendMail({
-    to: recipientEmail,
+  await resend.emails.send({
+  from: "onboarding@resend.dev",
+   to: recipientEmail,
     subject: 'Request declined',
     html: `
       <h3>Hello ${username || 'there'},</h3>
       <p>Your registration request has been declined. Please contact admin.</p>
     `,
-  });
+});
+  // await sendMail({
+  //   to: recipientEmail,
+  //   subject: 'Request declined',
+  //   html: `
+  //     <h3>Hello ${username || 'there'},</h3>
+  //     <p>Your registration request has been declined. Please contact admin.</p>
+  //   `,
+  // });
 }
 
 async function sendOtp(otp,recipientEmail, name) {
@@ -107,8 +132,18 @@ async function sendOtp(otp,recipientEmail, name) {
           <p>Keep this code confidential.</p>
         `,
       };
+      await resend.emails.send({
+      from: `"Your App Team" onboarding@resend.dev`,
+        to: recipientEmail,
+        subject: 'Your login OTP Code',
+        html: `
+          <h3>Hello ${name},</h3>
+          <p>Your otp is ${otp}</p>
+          <p>Keep this code confidential.</p>
+        `,
+    });
 
-      await transporter.sendMail(mailOptions);
+      // await transporter.sendMail(mailOptions);
 
       console.log(`QR Code successfully emailed to ${recipientEmail}`);
     } catch (error) {
