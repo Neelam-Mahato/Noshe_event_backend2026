@@ -134,7 +134,7 @@ async function sendOtp(otp,recipientEmail, name) {
       // };
       let s = "onboarding@resend.dev";
       await resend.emails.send({
-      from: `"Your App Team " ${s}`,
+      from: `"Your App Team " <${s}>`,
         to: recipientEmail,
         subject: 'Your login OTP Code',
         html: `
