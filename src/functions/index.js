@@ -122,18 +122,19 @@ async function sendEmail(recipientEmail, username) {
 
 async function sendOtp(otp,recipientEmail, name) {
     try {
-      const mailOptions = {
-        from: `"Your App Team" <${process.env.EMAIL_USER}>`,
-        to: recipientEmail,
-        subject: 'Your login OTP Code',
-        html: `
-          <h3>Hello ${name},</h3>
-          <p>Your otp is ${otp}</p>
-          <p>Keep this code confidential.</p>
-        `,
-      };
+      // const mailOptions = {
+      //   from: `"Your App Team" <${process.env.EMAIL_USER}>`,
+      //   to: recipientEmail,
+      //   subject: 'Your login OTP Code',
+      //   html: `
+      //     <h3>Hello ${name},</h3>
+      //     <p>Your otp is ${otp}</p>
+      //     <p>Keep this code confidential.</p>
+      //   `,
+      // };
+      let s = "onboarding@resend.dev";
       await resend.emails.send({
-      from: `"Your App Team" onboarding@resend.dev`,
+      from: `"Your App Team " ${s}`,
         to: recipientEmail,
         subject: 'Your login OTP Code',
         html: `
